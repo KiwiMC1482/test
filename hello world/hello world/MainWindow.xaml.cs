@@ -27,13 +27,20 @@ namespace hello_world
 
         private void btnhello_Click(object sender, RoutedEventArgs e)
         {
-            lblhello.Content = ("Hello World!");
+            lblhello.Content = "Hello World!";
         }
 
         private void btnok_Click(object sender, RoutedEventArgs e)
         {
             lblhello.Content = "Hello Kira!";
+            //messgae box code
             MessageBox.Show("Hello World", "hello");
+        }
+
+        private void btnSteven_Click(object sender, RoutedEventArgs e)
+        {
+            lblhello.Content = "Hello Steven";
+            
         }
     }
 }
