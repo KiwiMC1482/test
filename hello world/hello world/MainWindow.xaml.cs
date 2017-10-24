@@ -34,7 +34,11 @@ namespace hello_world
         {
             lblhello.Content = "Hello Kira!";
             //messgae box code
-            MessageBox.Show("Hello World", "hello");
+           var results = MessageBox.Show("Hello World", "hello",MessageBoxButton.YesNo,MessageBoxImage.Question);
+            if (results == MessageBoxResult.Yes)
+            {
+                lblhello.Content = "Hello Ross and Kai";
+            }
         }
 
         private void btnSteven_Click(object sender, RoutedEventArgs e)
