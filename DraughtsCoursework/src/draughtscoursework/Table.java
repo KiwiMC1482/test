@@ -135,7 +135,7 @@ public class Table
             
             if(board.getTile(this.tileId).isTileOccupied()) 
             {
-                if(board.getTile(this.tileId).getPiece().getPieceAlliance().isWhite())
+                if(board.getTile(this.tileId).getPiece().getPieceAlliance().isBlack())
                 {
                     //Black King
                     if(board.getTile(this.tileId).getPiece().getPieceType().isKing())
