@@ -97,7 +97,7 @@ public class Table
         
         private void assignTileIcon(final Board board) 
         {
-            //this.removeAll();
+            this.removeAll();
             
             if(board.getTile(this.tileId).isTileOccupied()) 
             {
@@ -108,7 +108,8 @@ public class Table
                     {
                         try
                         {
-                         final BufferedImage image = ImageIO.read(new File("DraughtsCoursework/art/WK.gif"));   
+                         final BufferedImage whiteKingImage = ImageIO.read(new File("C:\\Users\\user\\Documents\\NetBeansProjects\\DraughtsCoursework\\art\\WK.gif"));
+                         add(new JLabel(new ImageIcon(whiteKingImage)));
                         }
                         catch(final IOException e) 
                         {
@@ -120,7 +121,8 @@ public class Table
                     {
                         try
                         {
-                         final BufferedImage image = ImageIO.read(new File("DraughtsCoursework/art/WC.gif"));   
+                         final BufferedImage whiteCheckerImage = ImageIO.read(new File("C:\\Users\\user\\Documents\\NetBeansProjects\\DraughtsCoursework\\art\\WC.gif"));
+                         add(new JLabel(new ImageIcon(whiteCheckerImage))); 
                         }
                         catch(final IOException e) 
                         {
@@ -140,7 +142,8 @@ public class Table
                     {
                         try
                         {
-                         final BufferedImage image = ImageIO.read(new File("DraughtsCoursework/art/BK.gif"));   
+                         final BufferedImage blackKingImage = ImageIO.read(new File("C:\\Users\\user\\Documents\\NetBeansProjects\\DraughtsCoursework\\art\\BK.gif"));
+                         add(new JLabel(new ImageIcon(blackKingImage)));
                         }
                         catch(final IOException e) 
                         {
@@ -152,7 +155,8 @@ public class Table
                     {
                         try
                         {
-                         final BufferedImage image = ImageIO.read(new File("DraughtsCoursework/art/BC.gif"));   
+                         final BufferedImage blackCheckerImage = ImageIO.read(new File("C:\\Users\\user\\Documents\\NetBeansProjects\\DraughtsCoursework\\art\\BC.gif"));
+                         add(new JLabel(new ImageIcon(blackCheckerImage)));
                         }
                         catch(final IOException e) 
                         {
