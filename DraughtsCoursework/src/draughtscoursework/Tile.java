@@ -1,6 +1,11 @@
 package draughtscoursework;
 
+import draughtscoursework.Alliance;
+
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.Table;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +16,41 @@ public abstract class Tile
     //which is equal to whatever is passed into the constructor
     protected final int tileCoordinate;
 
-    private static final Map<Integer, EmptyTile> EMPTY_TILES_CACHE = createAllPossibleEmptyTiles();
+    private static final Map<Integer, EmptyTile> EMPTY_TILES = createAllPossibleEmptyTiles();
+    private static final Table<Integer, Piece, OccupiedTile> OCCUPIED_TILES = createAllPossibleOccupiedTiles();
+    
+    private Tile(final int coordinate) {
+        this.tileCoordinate = coordinate;
+    }
+
+    //The next few couple of variables and method will tell whther a tile is occupied or empty
+    public abstract boolean isTileOccupied();
+
+    public abstract Piece getPiece();
+
+    //Creates tiles
+    static Tile createTile(final int coordinate, final Piece piece) 
+    {
+
+        if(piece == null) 
+        {
+            return EMPTY_TILES.get(coordinate);
+        }
+
+        final OccupiedTile cachedOccupiedTile = OCCUPIED_TILES.get(coordinate, piece);
+
+        if(cachedOccupiedTile != null) 
+        {
+            return cachedOccupiedTile;
+        }
+
+        return new OccupiedTile(coordinate, piece);
+    }
+    
+    public int getTileCoordinate()
+    {
+        return this.tileCoordinate;
+    }
     
     private static Map<Integer,EmptyTile> createAllPossibleEmptyTiles() 
     {
@@ -24,25 +63,29 @@ public abstract class Tile
         return ImmutableMap.copyOf(emptyTileMap);
     }
     
-    //Creates tiles
-    public static Tile createTile(final int tileCoordinates, final Piece piece)
+    private static Table<Integer, Piece, OccupiedTile> createAllPossibleOccupiedTiles()
     {
-        return piece != null ? new OccupiedTile(tileCoordinates,piece) : EMPTY_TILES_CACHE.get(tileCoordinates);
-    }
-   
-    private Tile(final int tileCoordinate) 
-    {
-        this.tileCoordinate = tileCoordinate;
-    }
-    
-    //The next few couple of variables and method will tell whther a tile is occupied or empty
-    public abstract boolean isTileOccupied();
+        final Table<Integer, Piece, OccupiedTile> occupiedTileTable = HashBasedTable.create();
 
-    public abstract Piece getPiece();
-    
-    public int getTileCoordinate()
-    {
-        return this.tileCoordinate;
+        for (final Alliance alliance : Alliance.values()) 
+        {
+            for (int i = 0; i < BoardUtils.NUM_TILES; i++)
+            {
+                final Checker whiteCheckerFirstMove = new Checker(alliance, i);
+                final Checker whiteCheckerMoved = new Checker(alliance, i);
+                occupiedTileTable.put(i, whiteCheckerFirstMove, new OccupiedTile(i, whiteCheckerFirstMove));
+                occupiedTileTable.put(i, whiteCheckerMoved, new OccupiedTile(i, whiteCheckerMoved));
+            }
+            
+            for (int i = 0; i < BoardUtils.NUM_TILES; i++)
+            {
+                final King whiteKingFirstMove = new King(alliance,i);
+                final King whiteKingMoved = new King(alliance, i);
+                occupiedTileTable.put(i, whiteKingFirstMove, new OccupiedTile(i, whiteKingFirstMove));
+                occupiedTileTable.put(i, whiteKingMoved, new OccupiedTile(i, whiteKingMoved));
+            }
+        }
+        return ImmutableTable.copyOf(occupiedTileTable);
     }
     
     public static final class EmptyTile extends Tile //Empty Tile Method

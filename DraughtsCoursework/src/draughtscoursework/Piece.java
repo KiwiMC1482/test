@@ -67,22 +67,41 @@ public abstract class Piece
         return this.pieceType;
     }
     
-    public abstract Collection<Move> calculateLegalMoves(final Board board);
+    public int getPieceValue() 
+    {
+        return this.pieceType.getPieceValue();
+    }
+    
+    public abstract int locationBonus();
 
     public abstract Piece movePiece(Move move);
-    
+
+    public abstract Collection<Move> calculateLegalMoves(final Board board);
+
     public enum PieceType
     {
-        CHECKER("C") 
+        CHECKER(350 , "C") 
         {
+            //@Override
+            public boolean isChecker() 
+            {
+                return true;
+            }
+            
             @Override
             public boolean isKing() 
             {
                 return false;
             }
         },
-        KING("K") 
+        KING(2000 , "K") 
         {
+            //@Override
+            public boolean isChecker() 
+            {
+                return false;
+            }
+            
             @Override
             public boolean isKing() 
             {
@@ -90,13 +109,21 @@ public abstract class Piece
             }
         };
         
-        private String pieceName;
+        private final int value;
+        private final String pieceName;
         
-        PieceType(final String pieceName)
+        
+        PieceType(final int val, final String pieceName) 
         {
+            this.value = val;
             this.pieceName = pieceName;
         }
         
+        public int getPieceValue() 
+        {
+            return this.value;
+        }
+
         @Override
         public String toString()
         {

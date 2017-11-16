@@ -9,6 +9,5 @@ public class DraughtsCoursework
         System.out.println(board);
         
         Table table = new  Table();
-
     }
 }

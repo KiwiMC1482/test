@@ -90,16 +90,20 @@ public abstract class Player
     
     //When a move is made. MoveTransition is returned which will wrap the board 
     //that is being transitioned to if move was valid
-    public MoveTransition makeMove(final Move move)
+    public MoveTransition makeMove(final Move move) 
     {
-        if(!isMoveLegal(move))
-        {
-            return new MoveTransition(this.board, move, MoveStatus.ILLEGAL);
+        if (!isMoveLegal(move)) {
+            return new MoveTransition(this.board, this.board, move, MoveStatus.ILLEGAL);
         }
-        
-        return null;
+        final Board transitionedBoard = move.execute();
+        return new MoveTransition(this.board, transitionedBoard, move, MoveStatus.DONE);
     }
     
+    public MoveTransition unMakeMove(final Move move) 
+    {
+        return new MoveTransition(this.board, move.undo(), move, MoveStatus.DONE);
+    }
+
     public abstract Collection<Piece> getActivePieces();
     public abstract Alliance getAlliance();
     public abstract Player getOpponent();
